@@ -2,7 +2,7 @@ function buildMetadata(sample) {
 
   // @TODO: Complete the following function that builds the metadata panel
   // Use `d3.json` to fetch the metadata for a sample
-  // var url = "/metadata/<sample>";
+  
   d3.json(`/metadata/${sample}`).then(data => {
     // Use d3 to select the panel with id of `#sample-metadata`
     var Metadata = d3.select("#sample-metadata");
@@ -24,9 +24,7 @@ function buildCharts(sample) {
 
   // @TODO: Use `d3.json` to fetch the sample data for the plots
   d3.json(`/samples/${sample}`).then((response) => {
-    // var otu_ids = response.otu_ids;
-    // var otu_labels = response.otu_labels;
-    // var sample_values = data.sample_values;
+    
     // @TODO: Build a Bubble Chart using the sample data
     var trace1 = {
       x: response.otu_ids,
@@ -34,7 +32,7 @@ function buildCharts(sample) {
       mode: 'markers',
       marker: {
         size: response.sample_values,
-        // sizeref = 2.0 * Math.max(...size) / (40 ** 2),
+        color: response.otu_ids,
         sizemode: 'area'
       },
       type: 'scatter'
@@ -43,14 +41,14 @@ function buildCharts(sample) {
     var layout = {
       title: 'Belly Button Diversity',
       showlegend: false,
-      height: 600,
+      height: 700,
       width: 1000,
-      // margin: { t: 0 },
       hovermode: "closest",
       xaxis: { title: "OTU ID" },
       yaxis: { title: "Sample Volume" }
     };
     Plotly.newPlot('bubble', data, layout);
+
     // @TODO: Build a Pie Chart
     // HINT: You will need to use slice() to grab the top 10 sample_values,
     // otu_ids, and labels (10 each).
@@ -60,8 +58,9 @@ function buildCharts(sample) {
       type: 'pie'
     }];
     var layout = {
-      height: 400,
-      width: 500
+      // margin: { t: 0, l: 0 },
+      height: 600,
+      width: 600
     };
     Plotly.newPlot('pie', data, layout);
   });
